@@ -20,6 +20,7 @@
 
 
 #include "stm32f4xx.h"
+#include "led.h"
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
@@ -31,20 +32,11 @@ void delay(uint32_t time) {
     }
 }
 
-void GPIO_Init(void) {
-    // 1. Uključi clock za GPIOD
-    RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
-
-    // 2. Postavi PD12 kao izlaz
-    GPIOD->MODER |= (1 << (12 * 2));  // Output mode
-    GPIOD->OTYPER &= ~(1 << 12);      // Push-pull
-    GPIOD->OSPEEDR |= (3 << (12 * 2)); // High speed
-    GPIOD->PUPDR &= ~(3 << (12 * 2));  // No pull-up/down
-}
 
 int main(void)
 {
-    GPIO_Init();
+//    GPIO_Init();
+	INIT_GREEN_LED();
 
     while (1) {
         GPIOD->ODR ^= (1 << 12); // Toggle PD12
